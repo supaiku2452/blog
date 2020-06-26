@@ -15,7 +15,6 @@ const Layout = styled.header`
   background-color: #fff;
   position: sticky;
   top: 0;
-  font-weight: bold;
   font-size: 30px;
   display: flex;
   align-items: center;
