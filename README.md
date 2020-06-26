@@ -14,5 +14,5 @@
 - [ ] カスタムドメイン取得
 - [ ] 公開設定
 - [x] syntax highlight
-- [ ] site meta 修正
+- [x] site meta 修正
 - [ ] ミニマップ?(右側に見出し出したい)
