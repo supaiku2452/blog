@@ -5,6 +5,7 @@ import { Header } from "./header"
 import SEO from "./seo"
 import { rhythm } from "../utils/typography.js"
 import { Link } from "gatsby"
+import { Footer } from "./footer"
 
 const Layout = ({ blogPosts }) => {
   return (
@@ -41,21 +42,13 @@ const Layout = ({ blogPosts }) => {
           })}
         </>
       </MainLayout>
-      <FooterLayout>
-        © {new Date().getFullYear()}, Built with
-        {` `}
-        <a href="https://www.gatsbyjs.org">Gatsby</a>
-      </FooterLayout>
+      <Footer />
     </div>
   )
 }
 
 const MainLayout = styled.main`
-  padding: 0 30px;
-`
-
-const FooterLayout = styled.footer`
-  padding: 0 30px;
+  padding: 30px;
 `
 
 export default Layout
