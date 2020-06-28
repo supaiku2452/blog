@@ -18,6 +18,7 @@
 - [ ] 公開設定
 - [x] syntax highlight
 - [x] site meta 修正
+- [ ] メインページ デザイン変更
 - [ ] blog-post デザイン変更
   - [ ] Table of Content(TOC)
   - [ ] BIO(気が向いたら)
