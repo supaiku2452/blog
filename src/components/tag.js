@@ -7,9 +7,7 @@ export const Tag = ({ tagName }) => {
 }
 
 const Layout = styled(Link)`
-  font-size: 18px;
-  padding: 4px;
+  font-size: 16px;
   display: inline-block;
-  margin: 4px;
   cursor: pointer;
 `
