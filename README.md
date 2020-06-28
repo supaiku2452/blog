@@ -15,4 +15,11 @@
 - [ ] 公開設定
 - [x] syntax highlight
 - [x] site meta 修正
-- [ ] ミニマップ?(右側に見出し出したい)
+- [ ] Table of Content(TOC)
+- [ ] プラグイン整理(あとで入れるやつ)
+  - [ ] gatsby-remark-copy-linked-files
+  - [ ] gatsby-plugin-react-helmet
+  - [ ] gatsby-plugin-manifest
+  - [ ] gatsby-plugin-google-analytics
+  - [ ] gatsby-plugin-netlify
+  - [ ] gatsby-plugin-robots-txt
