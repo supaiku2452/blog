@@ -10,15 +10,14 @@
 - [x] header デザイン変更
 - [x] typography 変更
 - [x] タグ追加
-- [ ] tag ページデザイン変更
-  - [ ] `/tags/`
-  - [ ] `/tags/${tagName}`
+- [x] tag ページデザイン変更
+  - [x] `/tags/${tagName}`
 - [ ] favicon
 - [ ] カスタムドメイン取得
 - [ ] 公開設定
 - [x] syntax highlight
 - [x] site meta 修正
-- [ ] メインページ デザイン変更
+- [x] メインページ デザイン変更
 - [ ] blog-post デザイン変更
   - [ ] Table of Content(TOC)
   - [ ] BIO(気が向いたら)

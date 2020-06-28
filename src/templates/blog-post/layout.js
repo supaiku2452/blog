@@ -1,12 +1,12 @@
 import React from "react"
-import { Header } from "../components/header"
-import SEO from "../components/seo"
-import { rhythm } from "../utils/typography.js"
+import { Header } from "../../components/header"
+import SEO from "../../components/seo"
+import { rhythm } from "../../utils/typography.js"
 import { Link } from "gatsby"
-import { Tags } from "../components/tags"
+import { Tags } from "../../components/tags"
 import styled from "styled-components"
-import { PublishDate } from "../components/publish-date"
-import { Footer } from "../components/footer"
+import { PublishDate } from "../../components/publish-date"
+import { Footer } from "../../components/footer"
 
 export const Layout = ({ data, pageContext }) => {
   const post = data.markdownRemark
