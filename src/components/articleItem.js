@@ -16,7 +16,7 @@ export const ArticleItem = ({ node }) => {
         </H3>
         <InfoHeader>
           <PublishDate date={node.frontmatter.date} />
-          <Tags tags={tags} />
+          {tags.length > 0 && <Tags tags={tags} />}
         </InfoHeader>
       </header>
       <section>
