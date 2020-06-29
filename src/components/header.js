@@ -1,21 +1,30 @@
 import React from "react"
 import styled from "styled-components"
 import { useNavigate } from "@reach/router"
+import { Icon } from "./Icon"
+import { rhythm } from "../utils/typography.js"
 
 export const Header = () => {
   const navigate = useNavigate()
   const onClick = () => navigate("/", { replace: true })
-  return <Layout onClick={onClick}>janjan's blog</Layout>
+  return (
+    <Layout onClick={onClick}>
+      janjan's blog
+      <IconsLayout>
+        <Icon iconName="home" />
+        <Icon iconName="rss" />
+        <Icon iconName="github" />
+        <Icon iconName="twitter" />
+      </IconsLayout>
+    </Layout>
+  )
 }
 
-// TODO: 右側にホームとかアイコンもろもろおきたい
-
 const Layout = styled.header`
-  height: 64px;
   background-color: #fff;
   position: sticky;
   top: 0;
-  font-size: 30px;
+  font-size: ${rhythm(1 * 0.9)};
   display: flex;
   align-items: center;
   z-index: 100;
@@ -23,4 +32,11 @@ const Layout = styled.header`
   padding-left: 24px;
   text-decoration-line: underline;
   cursor: pointer;
+  justify-content: space-between;
+`
+
+const IconsLayout = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  width: 180px;
 `

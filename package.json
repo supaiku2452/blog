@@ -36,6 +36,10 @@
     "typography-theme-wordpress-2016": "^0.16.19"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.29",
+    "@fortawesome/free-brands-svg-icons": "^5.13.1",
+    "@fortawesome/free-solid-svg-icons": "^5.13.1",
+    "@fortawesome/react-fontawesome": "^0.1.11",
     "babel-plugin-styled-components": "^1.10.7",
     "gatsby-plugin-styled-components": "^3.3.6",
     "gatsby-remark-autolink-headers": "^2.3.7",
