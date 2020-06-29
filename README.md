@@ -12,7 +12,7 @@
 - [x] タグ追加
 - [x] tag ページデザイン変更
   - [x] `/tags/${tagName}`
-- [ ] favicon
+- [x] favicon
 - [ ] カスタムドメイン取得
 - [ ] 公開設定
 - [x] syntax highlight
