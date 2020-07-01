@@ -1,8 +1,8 @@
 import React from "react"
 import styled from "styled-components"
 import { useNavigate } from "@reach/router"
-import { Icon } from "./Icon"
-import { rhythm } from "../utils/typography.js"
+import { Icon } from "../Icon"
+import { rhythm } from "../../utils/typography.js"
 
 export const Header = () => {
   const navigate = useNavigate()

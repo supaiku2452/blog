@@ -1,9 +1,9 @@
 import React from "react"
 import styled from "styled-components"
 import { Link } from "gatsby"
-import { rhythm } from "../utils/typography.js"
-import { Tags } from "./tags.js"
-import { PublishDate } from "./publish-date.js"
+import { rhythm } from "../../utils/typography.js"
+import { Tags } from "../Tags/index.js"
+import { PublishDate } from "../PublishDate/index.js"
 
 export const ArticleItem = ({ node }) => {
   const title = node.frontmatter.title || node.fields.slug
