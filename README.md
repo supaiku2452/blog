@@ -24,5 +24,5 @@
 - [ ] プラグイン整理(あとで入れるやつ)
   - [ ] gatsby-remark-copy-linked-files
   - [ ] gatsby-plugin-google-analytics
-  - [ ] gatsby-plugin-netlify
+  - [x] gatsby-plugin-netlify
   - [ ] gatsby-plugin-robots-txt
