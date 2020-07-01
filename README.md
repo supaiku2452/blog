@@ -20,7 +20,7 @@
 - [x] メインページ デザイン変更
 - [ ] blog-post デザイン変更
   - [ ] Table of Content(TOC)
-  - [ ] BIO(気が向いたら)
+  - [x] BIO(気が向いたら)
 - [ ] プラグイン整理(あとで入れるやつ)
   - [ ] gatsby-remark-copy-linked-files
   - [ ] gatsby-plugin-google-analytics

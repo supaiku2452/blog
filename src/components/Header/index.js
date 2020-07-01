@@ -8,12 +8,13 @@ export const Header = () => {
   const onClick = path => navigate(path, { replace: true })
   const onClickSafetyMoveWindow = url =>
     window.open(url, "_blank", "noopener,noreferrer")
+
   return (
     <Layout>
       janjan's blog
       <IconsLayout>
         <Icon iconName="home" onClick={() => onClick("/")} />
-        <Icon iconName="rss" />
+        {/* <Icon iconName="rss" /> */}
         <Icon
           iconName="github"
           onClick={() =>
@@ -32,6 +33,7 @@ export const Header = () => {
 }
 
 const Layout = styled.header`
+  height: 48px;
   background-color: #fff;
   position: sticky;
   top: 0;

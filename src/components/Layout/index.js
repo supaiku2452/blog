@@ -5,11 +5,14 @@ import { Header } from "../header"
 import SEO from "../seo"
 import { ArticleItem } from "../articleItem"
 import { Footer } from "../footer"
+import Bio from "../bio"
 
 const Layout = ({ blogPosts }) => {
+  console.log("")
   return (
     <div>
       <Header />
+      <Bio />
       <MainLayout>
         <SEO title="All posts" />
         <>
@@ -24,6 +27,7 @@ const Layout = ({ blogPosts }) => {
 }
 
 const MainLayout = styled.main`
+  width: calc(100% - 300px);
   padding: 30px;
 `
 

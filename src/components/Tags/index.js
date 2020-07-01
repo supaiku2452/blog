@@ -5,7 +5,7 @@ import { Tag } from "./tag"
 export const Tags = ({ tags }) => {
   return (
     <Layout>
-      Tags:
+      Tags:&nbsp;
       {tags.map(tag => (
         <Tag key={tag} tagName={tag} />
       ))}
