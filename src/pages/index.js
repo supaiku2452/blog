@@ -1,15 +1,15 @@
-import React from "react";
-import { graphql } from "gatsby";
+import React from "react"
+import { graphql } from "gatsby"
 
-import Layout from "./../components/Layout";
+import Layout from "./../components/Layout"
 
 const BlogIndex = ({ data, location }) => {
-  const siteTitle = data.site.siteMetadata.title;
-  const posts = data.allMarkdownRemark.edges;
-  return <Layout location={location} title={siteTitle} blogPosts={posts} />;
-};
+  const siteTitle = data.site.siteMetadata.title
+  const posts = data.allMarkdownRemark.edges
+  return <Layout location={location} title={siteTitle} blogPosts={posts} />
+}
 
-export default BlogIndex;
+export default BlogIndex
 
 export const pageQuery = graphql`
   query {
@@ -21,7 +21,7 @@ export const pageQuery = graphql`
     allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
       edges {
         node {
-          excerpt
+          excerpt(truncate: true)
           fields {
             slug
           }
@@ -38,4 +38,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`;
+`
