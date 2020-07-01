@@ -1,17 +1,17 @@
-import React from "react"
-import { Header } from "../../components/header"
-import SEO from "../../components/seo"
-import { rhythm } from "../../utils/typography.js"
-import { Link } from "gatsby"
-import { Tags } from "../../components/Tags"
-import styled from "styled-components"
-import { PublishDate } from "../../components/PublishDate"
-import { Footer } from "../../components/footer"
+import React from "react";
+import { Header } from "./../../components/Header";
+import SEO from "./../../components/seo";
+import { rhythm } from "./../../utils/typography.js";
+import { Link } from "gatsby";
+import { Tags } from "./../../components/Tags";
+import styled from "styled-components";
+import { PublishDate } from "./../../components/PublishDate";
+import { Footer } from "./../../components/Footer";
 
 export const Layout = ({ data, pageContext }) => {
-  const post = data.markdownRemark
-  const { previous, next } = pageContext
-  const tags = post.frontmatter.tags ?? []
+  const post = data.markdownRemark;
+  const { previous, next } = pageContext;
+  const tags = post.frontmatter.tags ?? [];
   return (
     <div>
       <Header />
@@ -52,32 +52,32 @@ export const Layout = ({ data, pageContext }) => {
       </Nav>
       <Footer />
     </div>
-  )
-}
+  );
+};
 
 const Article = styled.article`
   padding: 0 30px;
-`
+`;
 const ArticleHeader = styled.header`
   margin-bottom: 16px;
-`
+`;
 
 const H1 = styled.h1`
   margin-top: ${rhythm(1)};
   margin-bottom: 0;
-`
+`;
 const InfoHeader = styled.div`
   display: flex;
   > div:not(:first-child) {
     margin-left: 8px;
   }
-`
+`;
 const Nav = styled.nav`
   padding: 0 30px;
-`
+`;
 const HR = styled.hr`
   margin-bottom: ${rhythm(1)};
-`
+`;
 const UL = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -85,4 +85,4 @@ const UL = styled.ul`
   list-style: none;
   padding: 0;
   margin-left: 0;
-`
+`;

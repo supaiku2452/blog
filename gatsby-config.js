@@ -3,7 +3,8 @@ module.exports = {
     title: `janjan's tech blog`,
     author: {
       name: `janjan<@supaiku2452>`,
-      summary: `who web developer like full-stack engineer and interested in react/typescript/javascript/and more...`,
+      summary:
+        `who web developer like full-stack engineer and interested in react/typescript/javascript/and more...`,
     },
     description: `janjanの技術ブログ`,
     siteUrl: `https://gatsby-starter-blog-demo.netlify.app/`,
@@ -79,6 +80,5 @@ module.exports = {
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
     `gatsby-plugin-styled-components`,
-    `gatsby-plugin-netlify`,
   ],
-}
+};

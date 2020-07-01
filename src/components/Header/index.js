@@ -1,13 +1,13 @@
-import React from "react"
-import styled from "styled-components"
-import { useNavigate } from "@reach/router"
-import { Icon } from "../Icon"
+import React from "react";
+import styled from "styled-components";
+import { useNavigate } from "@reach/router";
+import { Icon } from "./../Icon";
 
 export const Header = () => {
-  const navigate = useNavigate()
-  const onClick = path => navigate(path, { replace: true })
-  const onClickSafetyMoveWindow = url =>
-    window.open(url, "_blank", "noopener,noreferrer")
+  const navigate = useNavigate();
+  const onClick = (path) => navigate(path, { replace: true });
+  const onClickSafetyMoveWindow = (url) =>
+    window.open(url, "_blank", "noopener,noreferrer");
 
   return (
     <Layout>
@@ -18,19 +18,17 @@ export const Header = () => {
         <Icon
           iconName="github"
           onClick={() =>
-            onClickSafetyMoveWindow("https://github.com/supaiku2452")
-          }
+            onClickSafetyMoveWindow("https://github.com/supaiku2452")}
         />
         <Icon
           iconName="twitter"
           onClick={() =>
-            onClickSafetyMoveWindow("https://twitter.com/supaiku2452")
-          }
+            onClickSafetyMoveWindow("https://twitter.com/supaiku2452")}
         />
       </IconsLayout>
     </Layout>
-  )
-}
+  );
+};
 
 const Layout = styled.header`
   height: 48px;
@@ -46,10 +44,10 @@ const Layout = styled.header`
   text-decoration-line: underline;
   cursor: pointer;
   justify-content: space-between;
-`
+`;
 
 const IconsLayout = styled.div`
   display: flex;
   justify-content: space-evenly;
   width: 180px;
-`
+`;

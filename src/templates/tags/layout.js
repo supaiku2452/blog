@@ -1,13 +1,13 @@
-import React from "react"
-import { Header } from "../../components/header"
-import SEO from "../../components/seo"
-import styled from "styled-components"
-import { Footer } from "../../components/footer"
-import { ArticleItem } from "../../components/articleItem"
+import React from "react";
+import { Header } from "./../../components/Header";
+import SEO from "./../../components/seo";
+import styled from "styled-components";
+import { Footer } from "./../../components/Footer";
+import { ArticleItem } from "./../../components/ArticleItem";
 
 export const Layout = ({ data, pageContext }) => {
-  const { tag } = pageContext
-  const { edges } = data.allMarkdownRemark
+  const { tag } = pageContext;
+  const { edges } = data.allMarkdownRemark;
 
   return (
     <div>
@@ -25,9 +25,9 @@ export const Layout = ({ data, pageContext }) => {
       </MainLayout>
       <Footer />
     </div>
-  )
-}
+  );
+};
 
 const MainLayout = styled.main`
   padding: 30px;
-`
+`;
