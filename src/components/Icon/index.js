@@ -9,11 +9,11 @@ const useableBrandIcons = ["twitter", "github"]
 
 library.add(faGithub, faTwitter, faHome, faRss, faTags)
 
-export const Icon = ({ iconName }) => {
+export const Icon = ({ iconName, onClick }) => {
   if (useableIcons.includes(iconName)) {
-    return <FontAwesomeIcon icon={iconName} />
+    return <FontAwesomeIcon icon={iconName} onClick={onClick} />
   } else if (useableBrandIcons.includes(iconName)) {
-    return <FontAwesomeIcon icon={["fab", iconName]} />
+    return <FontAwesomeIcon icon={["fab", iconName]} onClick={onClick} />
   }
   return null
 }

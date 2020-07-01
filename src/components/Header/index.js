@@ -2,19 +2,30 @@ import React from "react"
 import styled from "styled-components"
 import { useNavigate } from "@reach/router"
 import { Icon } from "../Icon"
-import { rhythm } from "../../utils/typography.js"
 
 export const Header = () => {
   const navigate = useNavigate()
-  const onClick = () => navigate("/", { replace: true })
+  const onClick = path => navigate(path, { replace: true })
+  const onClickSafetyMoveWindow = url =>
+    window.open(url, "_blank", "noopener,noreferrer")
   return (
-    <Layout onClick={onClick}>
+    <Layout>
       janjan's blog
       <IconsLayout>
-        <Icon iconName="home" />
+        <Icon iconName="home" onClick={() => onClick("/")} />
         <Icon iconName="rss" />
-        <Icon iconName="github" />
-        <Icon iconName="twitter" />
+        <Icon
+          iconName="github"
+          onClick={() =>
+            onClickSafetyMoveWindow("https://github.com/supaiku2452")
+          }
+        />
+        <Icon
+          iconName="twitter"
+          onClick={() =>
+            onClickSafetyMoveWindow("https://twitter.com/supaiku2452")
+          }
+        />
       </IconsLayout>
     </Layout>
   )
@@ -24,7 +35,7 @@ const Layout = styled.header`
   background-color: #fff;
   position: sticky;
   top: 0;
-  font-size: ${rhythm(1 * 0.9)};
+  font-size: 24px;
   display: flex;
   align-items: center;
   z-index: 100;
