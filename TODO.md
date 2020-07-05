@@ -13,8 +13,8 @@
 - [x] tag ページデザイン変更
   - [x] `/tags/${tagName}`
 - [x] favicon
-- [ ] カスタムドメイン取得
-- [ ] 公開設定
+- [x] カスタムドメイン取得
+- [x] 公開設定
 - [x] syntax highlight
 - [x] site meta 修正
 - [x] メインページ デザイン変更
