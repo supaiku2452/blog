@@ -1,17 +1,16 @@
-import React from "react";
-import styled from "styled-components";
+import React from "react"
+import styled from "styled-components"
 
-import { Header } from "./../Header";
-import SEO from "./../seo";
-import { ArticleItem } from "./../ArticleItem";
-import { Footer } from "./../Footer";
-import Bio from "./../bio";
+import { Header } from "./../Header"
+import SEO from "./../seo"
+import { ArticleItem } from "./../ArticleItem"
+import { Footer } from "./../Footer"
+import Bio from "./../bio"
 
 const Layout = ({ blogPosts }) => {
   return (
     <div>
       <Header />
-      <Bio />
       <MainLayout>
         <SEO title="All posts" />
         <>
@@ -20,14 +19,18 @@ const Layout = ({ blogPosts }) => {
           ))}
         </>
       </MainLayout>
+      <Bio />
       <Footer />
     </div>
-  );
-};
+  )
+}
 
 const MainLayout = styled.main`
   width: calc(100% - 300px);
+  @media (max-width: 768px) {
+    width: 100%;
+  }
   padding: 30px;
-`;
+`
 
-export default Layout;
+export default Layout
