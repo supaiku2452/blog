@@ -44,7 +44,7 @@ OAuth2.0 は、[RFC 6749](https://tools.ietf.org/html/rfc6749)で定義されて
 
 次では OAuth2.0 で、実際に Google アカウントのアクセス権が取得できるまでの流れを追ってみたいと思います。
 
-## OAuth2.0 の流れ
+## OAuth2.0 のフロー概略
 
 ここでは実際にチャットサービスが Google アカウントへのアクセス権を得るまでの流れを説明していきます。
 
@@ -57,8 +57,6 @@ OAuth2.0 は、[RFC 6749](https://tools.ietf.org/html/rfc6749)で定義されて
 
 では流れについて説明していきます(今回は認可コードによる認証フローです)。まずは下図を参照ください。こちらの流れに沿って、必要な場所を補足していきます<br />
 <small>※純粋な流れを説明するため、リクエストに含まれるパラメータやリダイレクト処理などの詳細は省きます。詳細を知りたい方は、[RFC 6749 `4.1. Authorization Code Grant`](https://tools.ietf.org/html/rfc6749#section-4.1)を参照ください。</small>
-
-![OAuth2.0 基本フロー](rfc6749_oauth_flow.png)
 
 OAuth の認証フローは、 クライアントが認可サーバーの認可エンドポイントへ認可リクエストをするところから始まります。[下図 1.]。
 
@@ -90,19 +88,21 @@ OAuth の認証フローは、 クライアントが認可サーバーの認可�
 
 [下図 8.]
 
-## OAuth2.0 の認可フロー
+![OAuth2.0 基本フロー](rfc6749_oauth_flow.png)
+
+## OAuth2.0 の認可フロー種別
 
 ざっくりと認可フローを理解したところで RFC 6749 で定義されている認可フロー４種+α をみていきたいと思います。
 
-以下の `1.~4.` は認可フローです。 `5. リフレッシュトークンフロー` は認証周りの機能を実装するときによく使われると思うので触れておきたいと思います
+以下の `1. ~ 4.` は認可フローです。 `5. リフレッシュトークンフロー` は認証周りの機能を実装するときによく使われると思うので触れておきたいと思います
 
-1. [認可コードフロー: 4.1. Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1)
-2. [インプリシットフロー: 4.2. Implicit Grant](https://tools.ietf.org/html/rfc6749#section-4.2)
-3. [リソースオーナーパスワードクレデンシャルフロー: 4.3. Resource Owner Password Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.3)
-4. [クライアントクレデンシャルフロー: 4.4. Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4)
-5. [リフレッシュトークンフロー: 6. Refreshing an Access Token](https://tools.ietf.org/html/rfc6749#section-6)
+- [認可コードフロー: 4.1. Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1)
+- [インプリシットフロー: 4.2. Implicit Grant](https://tools.ietf.org/html/rfc6749#section-4.2)
+- [リソースオーナーパスワードクレデンシャルフロー: 4.3. Resource Owner Password Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.3)
+- [クライアントクレデンシャルフロー: 4.4. Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4)
+- [リフレッシュトークンフロー: 6. Refreshing an Access Token](https://tools.ietf.org/html/rfc6749#section-6)
 
-### 1. [認可コードフロー: 4.1. Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1)
+### [認可コードフロー: 4.1. Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1)
 
 認可コードフローは、認可コードを発行してもらい、その認可コードからアクセストークンとリフレッシュトークンの両方を取得するためのフローです。
 
@@ -120,15 +120,15 @@ scope=hoge fuga <- optional
 state=xyzxyz<- recommended
 ```
 
-cleint_id はクライアント側で発行する任意の識別子。OAuth2.0 でクライアント ID に対する仕様は定めていません。
+cleint_id はクライアント側で発行する任意の識別子です。OAuth2.0 でクライアント ID に対する仕様は定めていません。
 
 redirect_uri は、リソースオーナーとのやりとりが完了したら、認可サーバーはユーザーをクライアントへ誘導します。リダイレクト先は、URL に指定されたものか事前登録されたものが使用されます。
 
-scope は、アクセスできるスコープを指定するときに使用します。例えば、YouTube で YouTube アカウントの表示でスコープを絞る場合は、 `scope=https://www.googleapis.com/auth/youtube.readonly` となります。scope はプロバイダーごとで異なるため、ドキュメントを読んで指定しましょう。
+scope は、アクセスできるスコープを指定するときに使用します。例えば、YouTube アカウントの表示でスコープを絞る場合は、 `scope=https://www.googleapis.com/auth/youtube.readonly` となります。scope はプロバイダーごとで異なるため、ドキュメントを読んで指定しましょう。
 
 state はリクエストとコールバック間が状態を維持するために使用します。基本的には CSRF 対策の用途となります。
 
-(2) 認可サーバーの認可エンドポイントは、受け付けたリクエストを元にリソースオーナーを認証し、認可を得る。認証は、ユーザーエージェント(ブラウザ)を通じて行われます(画面でユーザー、パスワードなどの入力するイメージ)。
+(2) 認可サーバーの認可エンドポイントは、受け付けたリクエストを元にリソースオーナーを認証し、認可を得ます。認証は、ユーザーエージェント(ブラウザ)を通じて行われます(画面でユーザー、パスワードなどの入力するイメージ)。
 
 (3) (2)で認証・認可が行われると認証サーバーからクライアントにレスポンスを返します。レスポンスは以下の通りです。
 
@@ -165,7 +165,7 @@ redirect_uri と state はいずれ以前の認可リクエストに含まれて
 
 client_id は認証サーバーでクライアント認証が終わっていない場合は必須です。
 
-(5) 認可サーバーは、トークンリクエストを受け付けたら、アクセストークンやリフレッシュトークンを発行しレスポンスとして返却する。このときのトークンレスポンスは以下の通りです。
+(5) 認可サーバーは、トークンリクエストを受け付けたら、アクセストークンやリフレッシュトークンを発行しレスポンスとして返却します。このときのトークンレスポンスは以下の通りです。
 
 ```none
 HTTP/1.1 200 OK
@@ -184,7 +184,7 @@ Pragma: no-cache
 
 access_token は認可サーバーが発行したアクセストークンです。
 
-token_type はトークンのタイプを示します。詳細は[7.1. Access Token Types](https://tools.ietf.org/html/rfc6749#section-7.1)を参照してください
+token_type はトークンのタイプを示します。詳細は[7.1. Access Token Types](https://tools.ietf.org/html/rfc6749#section-7.1)を参照してください。
 
 expires_in は、アクセストークンの有効期間(秒)です。推奨なのでどのような値が返却されるかはプロバイダーのドキュメントを読むのが良さそうです。
 
