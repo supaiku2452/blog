@@ -101,3 +101,93 @@ OAuth の認証フローは、 クライアントが認可サーバーの認可�
 3. [リソースオーナーパスワードクレデンシャルフロー: 4.3. Resource Owner Password Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.3)
 4. [クライアントクレデンシャルフロー: 4.4. Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4)
 5. [リフレッシュトークンフロー: 6. Refreshing an Access Token](https://tools.ietf.org/html/rfc6749#section-6)
+
+### 1. [認可コードフロー: 4.1. Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1)
+
+認可コードフローは、認可コードを発行してもらい、その認可コードからアクセストークンとリフレッシュトークンの両方を取得するためのフローです。
+
+(1) クライアントが認可サーバーの認可エンドポイントに認可リクエストを送ります。このときクライアントが送る認可リクエストは以下の通りです。
+
+```none
+GET {endpoint url} HTTP/1.1
+Host: {host}
+Content-Type: application/x-www-form-urlencoded
+
+response_type=code <- required
+client_id=xxxyyyzzz　<- required
+redirect_uri=https://www.example.com/hoge/fuga <- optional
+scope=hoge fuga <- optional
+state=xyzxyz<- recommended
+```
+
+cleint_id はクライアント側で発行する任意の識別子。OAuth2.0 でクライアント ID に対する仕様は定めていません。
+
+redirect_uri は、リソースオーナーとのやりとりが完了したら、認可サーバーはユーザーをクライアントへ誘導します。リダイレクト先は、URL に指定されたものか事前登録されたものが使用されます。
+
+scope は、アクセスできるスコープを指定するときに使用します。例えば、YouTube で YouTube アカウントの表示でスコープを絞る場合は、 `scope=https://www.googleapis.com/auth/youtube.readonly` となります。scope はプロバイダーごとで異なるため、ドキュメントを読んで指定しましょう。
+
+state はリクエストとコールバック間が状態を維持するために使用します。基本的には CSRF 対策の用途となります。
+
+(2) 認可サーバーの認可エンドポイントは、受け付けたリクエストを元にリソースオーナーを認証し、認可を得る。認証は、ユーザーエージェント(ブラウザ)を通じて行われます(画面でユーザー、パスワードなどの入力するイメージ)。
+
+(3) (2)で認証・認可が行われると認証サーバーからクライアントにレスポンスを返します。レスポンスは以下の通りです。
+
+```none
+HTTP/1.1 302 Found
+Location: https://www.exmaple.com/hoge/fuga?
+
+code=hogehogefugafuga <- required
+state=xyzxyz <- required if state set
+```
+
+code は発行された認可コードです。認可コードは漏洩のリスクがあるため有効期限を設定する必要があります。RFC で推奨されている時間は 10 分です。また、認可コードが 2 回以上使用されたら、認可サーバーはリクエストを拒否する必要があります(トークン発行後はリフレッシュトークンで再発行ができるから、認可コードは 1 回しか使わないはず)。
+
+state はリクエストに含まれていた場合はレスポンスに設定する必要があります。このとき、設定する値はリクエストで設定された値です。
+
+(4) (3)で発行された認可コードを認可サーバーのトークンエンドポイントにリクエストします。このときクライアントが送るトークンリクエストは以下の通りです。
+
+```none
+POST {endpoint url} HTTP/1.1
+Host: {host}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code <- required
+code=hogehogefugafuga<- required
+redirect_uri=https://www.example.com/hoge/fuga <- require if redirect_url set.
+client_id=xxxyyyzzz　<- required if the client is not authenticated
+```
+
+grant_type は、 `authorization_code` で固定です。
+
+code は、認可サーバから受け取った認可コードを設定します。
+
+redirect_uri と state はいずれ以前の認可リクエストに含まれていたら設定します。
+
+client_id は認証サーバーでクライアント認証が終わっていない場合は必須です。
+
+(5) 認可サーバーは、トークンリクエストを受け付けたら、アクセストークンやリフレッシュトークンを発行しレスポンスとして返却する。このときのトークンレスポンスは以下の通りです。
+
+```none
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+  "access_token": "aklsdjfalksjfasifkjfa", <- required
+  "token_type": "Bearer",  <- required
+  "expires_in":3600, <- recommended
+  "refresh_token":"kasdfadfas8fa0wieafsdfaj", <- optional
+  "scope":"hoge fuga"
+}
+```
+
+access_token は認可サーバーが発行したアクセストークンです。
+
+token_type はトークンのタイプを示します。詳細は[7.1. Access Token Types](https://tools.ietf.org/html/rfc6749#section-7.1)を参照してください
+
+expires_in は、アクセストークンの有効期間(秒)です。推奨なのでどのような値が返却されるかはプロバイダーのドキュメントを読むのが良さそうです。
+
+refresh_token は一般的に有効期限が長いアクセストークンをリクエストするために使用されます。
+
+scope は、認可リクエスト時と同じ scope であれば任意で、その例がは必須となります。
