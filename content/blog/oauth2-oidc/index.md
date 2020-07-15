@@ -55,7 +55,7 @@ OAuth2.0 は、[RFC 6749](https://tools.ietf.org/html/rfc6749)で定義されて
 - クライアント: リソースオーナーの承諾を受けて、リソースサーバーにアクセスすることができるアプリケーション。ここでいう、チャットサービスのこと
 - 認可サーバー: リソースオーナーの認証と認可が成功したときに、アクセストークンをクライアントに発行するサーバー。ここでは登場していないが Google アカウント認証サーバーだと仮定します
 
-では流れについて説明していきます(今回は認可コードによる認証フローです)。まずは下図を参照ください。こちらの流れに沿って、必要な場所を補足していきます<br />
+では流れについて説明していきます(今回は認可コードによる認証フローです。詳細なフローは後述)。まずは下図を参照ください。こちらの流れに沿って、必要な場所を補足していきます<br />
 <small>※純粋な流れを説明するため、リクエストに含まれるパラメータやリダイレクト処理などの詳細は省きます。詳細を知りたい方は、[RFC 6749 `4.1. Authorization Code Grant`](https://tools.ietf.org/html/rfc6749#section-4.1)を参照ください。</small>
 
 OAuth の認証フローは、 クライアントが認可サーバーの認可エンドポイントへ認可リクエストをするところから始まります。[下図 1.]。
@@ -119,6 +119,8 @@ redirect_uri=https://www.example.com/hoge/fuga <- optional
 scope=hoge fuga <- optional
 state=xyzxyz<- recommended
 ```
+
+認可コードフローの responce_type は **code** で固定です。
 
 cleint_id はクライアント側で発行する任意の識別子です。OAuth2.0 でクライアント ID に対する仕様は定めていません。
 
@@ -191,3 +193,47 @@ expires_in は、アクセストークンの有効期間(秒)です。推奨な�
 refresh_token は一般的に有効期限が長いアクセストークンをリクエストするために使用されます。
 
 scope は、認可リクエスト時と同じ scope であれば任意で、その例がは必須となります。
+
+### [インプリシットフロー: 4.2. Implicit Grant](https://tools.ietf.org/html/rfc6749#section-4.2)
+
+インプリシットフローは、認可リクエストをすると、その応答としてアクセストークンを取得するフローです。こちらのフローでは、リフレッシュトークンの発行はサポートされていません。またセキュリティ的に安全ではないフローですので、必要がない場合以外は使用を避けた方が良いでしょう。
+[※OAuth best practice 2.1.2][(https://tools.ietf.org/html/draft-ietf-oauth-security-topics-09](https://tools.ietf.org/html/draft-ietf-oauth-security-topics-09#section-2.1.2))
+
+(1) クライアントが認可サーバーの認可エンドポイントに認可リクエストを送ります。このときクライアントが送る認可リクエストは以下の通りです。
+
+```none
+GET {endpoint url} HTTP/1.1
+Host: {host}
+Content-Type: application/x-www-form-urlencoded
+
+response_type=token <- required
+client_id=xxxyyyzzz　<- required
+redirect_uri=https://www.example.com/hoge/fuga <- optional
+scope=hoge fuga <- optional
+state=xyzxyz<- recommended
+```
+
+インプリシットフローの response_type は **token** で固定です。
+
+上記以外の属性は認可コードフローに記載されていますので割愛します。
+
+(2) 認可サーバーの認可エンドポイントは、受け付けたリクエストを元にリソースオーナーを認証し、認可を得ます。認証は、ユーザーエージェント(ブラウザ)を通じて行われます(画面でユーザー、パスワードなどの入力するイメージ)。
+
+(3) (2)で認証・認可が行われると認証サーバーからリダイレクト URI を利用してクライアントに戻します。このとき URI には発行されたアクセストークンが含まれます。レスポンスは以下の通りです。
+
+```none
+HTTP/1.1 302 Found
+Location: https://www.exmaple.com/hoge/fuga#access_token=asdlkfajlskdfasdfalk&token_type=Bearer&...
+
+access_token=asdlkfajlskdfasdfalk <- required
+token_type=Bearer <- required
+expires_in=3600 <- recommended
+scope="hoge fuga" <- optional
+state=xyzxyz <- required if state set
+```
+
+(4) クライアントはユーザーエージェントを redirect_uri を元にリダイレクト(フラグメントは除く)します。
+
+(5) リダイレクト先からの返却は Web ページが返却されます(このとき返却される Web ページには埋め込みのスクリプトがあります)。Web ページはユーザーエージェントが保つ完全な URI にアクセスし、アクセストークンを取り出します。
+
+(6) ユーザーエージェントはクライアントにアクセストークンを渡します
