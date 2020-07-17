@@ -237,3 +237,47 @@ state=xyzxyz <- required if state set
 (5) リダイレクト先からの返却は Web ページが返却されます(このとき返却される Web ページには埋め込みのスクリプトがあります)。Web ページはユーザーエージェントが保つ完全な URI にアクセスし、アクセストークンを取り出します。
 
 (6) ユーザーエージェントはクライアントにアクセストークンを渡します
+
+### [リソースオーナーパスワードクレデンシャルフロー: 4.3. Resource Owner Password Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.3)
+
+リソースオーナーパスワードクレデンシャルフローは、リソースオーナーのクレデンシャル情報(ユーザー ID/パスワード)を利用してアクセストークンを取得するフローです。こちらのフローは、クライアントがクレデンシャル情報を保持するため、リソースオーナーがクライアントを信用している、もしくはこのフローでしたアクセストークンを取得できない場合にのみ利用を止めるべきです。
+
+(1) リソースオーナーはクライアントにユーザー ID とパスワードを提供します。RFC では、クライアントリソースオーナーからクレデンシャル情報を取得する方法は定めていません。しかし、アクセストークン取得後はクレデンシャル情報を破棄しなければなりません。
+
+(2) クライアントは認可サーバーに、リソースオーナーから取得したクレデンシャル情報をリクエストに含めて、アクセストークンをリクエストします。このときクライアントが送るリクエストは以下の通りです。
+
+```none
+POST {endpoint url} HTTP/1.1
+Host: {host}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password <- required
+username=user01 <- required
+password=password01 <- required
+scope=hoge fuga <- optional
+```
+
+リソースオーナーパスワードクレデンシャルフローの、grant_type は **password** で固定です。
+
+username には、リソースオーナーのユーザー ID を設定します。
+
+password には、リソースオーナーのパスワードを設定します。
+
+scope はその他と同じなので割愛します。
+
+(3) 認可サーバーは、リソースオーナーのクレデンシャル情報を検証し、問題がなければアクセストークンを返却します。リフレッシュトークンの発行は任意となっています。アクセストークンリクエストのレスポンスは以下の通りです。
+
+```none
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+  "access_token": "aklsdjfalksjfasifkjfa", <- required
+  "token_type": "Bearer",  <- required
+  "expires_in":3600, <- recommended
+  "refresh_token":"kasdfadfas8fa0wieafsdfaj", <- optional
+  "scope":"hoge fuga"
+}
+```
