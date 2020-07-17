@@ -315,3 +315,26 @@ Pragma: no-cache
   "scope":"hoge fuga"
 }
 ```
+
+### [リフレッシュトークン: 6. Refreshing an Access Token](https://tools.ietf.org/html/rfc6749#section-6)
+
+リフレッシュトークンは、クライアントが保持しているアクセストークンを更新する時に使用します。リフレッシュトークンは一般的には、有効期限の長い追加のアクセストークンを取得するために使用します。クライアントタイプがコンフィデンシャルの場合は、認可サーバーでクライアントの認証を行う必要があります。
+
+トークンエンドポイントへのリクエストは以下の通りです。
+
+```none
+POST {endpoint url} HTTP/1.1
+Host: {host}
+Authorization: Basic asdfjasldfjas
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token <- required
+refresh_token=falsdjflajdfal's <- required
+scope=hoge fuga <- optional
+```
+
+アクセストークン更新時の grant_type は **refresh_token** で固定です。
+
+refresh_toen には、クライアントが保持している refresh_token を指定します。
+
+scope を指定しない場合は元のアクセストークンと同じスコープが設定されます。
