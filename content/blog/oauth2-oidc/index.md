@@ -94,13 +94,13 @@ OAuth の認証フローは、 クライアントが認可サーバーの認可�
 
 ざっくりと認可フローを理解したところで RFC 6749 で定義されている認可フロー４種+α をみていきたいと思います。
 
-以下の `1. ~ 4.` は認可フローです。 `5. リフレッシュトークンフロー` は認証周りの機能を実装するときによく使われると思うので触れておきたいと思います
+以下の `1. ~ 4.` は認可フローです。 `5. リフレッシュトークン` は認証周りの機能を実装するときによく使われると思うので触れておきたいと思います
 
 - [認可コードフロー: 4.1. Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1)
 - [インプリシットフロー: 4.2. Implicit Grant](https://tools.ietf.org/html/rfc6749#section-4.2)
 - [リソースオーナーパスワードクレデンシャルフロー: 4.3. Resource Owner Password Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.3)
 - [クライアントクレデンシャルフロー: 4.4. Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4)
-- [リフレッシュトークンフロー: 6. Refreshing an Access Token](https://tools.ietf.org/html/rfc6749#section-6)
+- [リフレッシュトークン: 6. Refreshing an Access Token](https://tools.ietf.org/html/rfc6749#section-6)
 
 ### [認可コードフロー: 4.1. Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1)
 
@@ -278,6 +278,40 @@ Pragma: no-cache
   "token_type": "Bearer",  <- required
   "expires_in":3600, <- recommended
   "refresh_token":"kasdfadfas8fa0wieafsdfaj", <- optional
+  "scope":"hoge fuga"
+}
+```
+
+### [クライアントクレデンシャルフロー: 4.4. Client Credentials Grant](https://tools.ietf.org/html/rfc6749#section-4.4)
+
+クライアントクレデンシャルフローは、クライアントと認可サーバーとの間に信頼関係があり、クライアントクレデンシャルのみでアクセストークンを取得するフローです。このフローでは、リソースオーナーの認証は行わずに、クライアントの認証のみが行われます。
+
+(1) クライアントはアクセストークンリクエストにクライアントクレデンシャルを含めてリクエストする。このとき送信されるリクエストは以下の通りです。
+
+```none
+POST {endpoint url} HTTP/1.1
+Host: {host}
+Authorization: Basic alksdjfalskdjfalsjdl
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials <- required
+scope=hoge fuga <- optional
+```
+
+クライアントクレデンシャルフローの grant_type は、 `authorization_code` で固定です。
+
+(2) 認可サーバーは、クライアントクレデンシャルを元にクライアントを認証し、認証に問題がなければアクセストークンを返却します。このときリフレッシュトークンは含めべきではないとされています。
+
+```none
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+  "access_token": "aklsdjfalksjfasifkjfa", <- required
+  "token_type": "Bearer",  <- required
+  "expires_in":3600, <- recommended
   "scope":"hoge fuga"
 }
 ```
