@@ -1,5 +1,5 @@
 ---
-title: OAuth2.0に関するまとめ
+title: OAuth2.0の概要を理解する
 date: "2020-07-19"
 tags: ["OAuth", "OAuth2.0", "認可"]
 ---
