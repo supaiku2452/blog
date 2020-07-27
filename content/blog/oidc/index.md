@@ -73,4 +73,64 @@ redirect_uri=https://www.example.com/hoge/fuga
 
 OIDC では上記以外にもクエリが増えています。詳細は、[OpenID Connect Core 1.0 - 3.1.2.1. Authentication Request](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest)を参照ください。
 
-(2) 認証サーバーはユーザーを認証をします。認証リクエストに対するバリデーションについては、[OpenID Connect Core 1.0 - 3.1.2.2. Authentication Request Validation](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequestValidation)を参照してください。
+(2) 認証サーバーはユーザーを認証をします。認証リクエストに対するバリデーションと認証については、[OpenID Connect Core 1.0 - 3.1.2.2. Authentication Request Validation](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequestValidation)と[OpenID Connect Core 1.0 - 3.1.2.3. Authorization Server Authenticates End-User](https://openid.net/specs/openid-connect-core-1_0.html#Authenticates)を参照してください。
+
+(3) 認証サーバーがユーザーの同意と認可を得たら、認可コードをクライアントに返却します。このとき認証サーバーが返却するレスポンスは以下の通りです。
+
+```none
+HTTP/1.1 302 Found
+Location: https://www.exmaple.com/hoge/fuga?
+
+code=hogehogefugafuga
+state=xyzxyz
+```
+
+(4) クライアントは認可コードを使用して、トークンエンドポイントにリクエストを送信します。このときクライアントが送るトークンエンドポイントへのリクエストは以下の通りです(リクエストｎ詳細は OAuth2.0 の認可コードフローと同じです)。
+
+```none
+GET {endpoint url} HTTP/1.1
+Host: {host}
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic adfaljdfaljdfalkdjalkjfs
+
+grant_type=authorization_code
+code=hogehogefugafuga
+redirect_uri=https://www.example.com/hoge/fuga
+```
+
+(5) 認可サーバーは、リクエストの検証行う。リクエストの検証の詳細は、[OpenID Connect Core 1.0 - 3.1.3.2. Token Request Validation](https://openid.net/specs/openid-connect-core-1_0.html#TokenRequestValidation)を参照ください。
+
+検証結果に問題がない場合は、アクセストークンと ID Token をレスポンスに設定し、返却します。このとき認可サーバーが返却するレスポンスは以下の通りです。
+
+```none
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+  "access_token": "aklsdjfalksjfasifkjfa",
+  "token_type": "Bearer",
+  "expires_in":3600,
+  "refresh_token":"kasdfadfas8fa0wieafsdfaj",
+  "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
+     yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
+     NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
+     fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
+     AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
+     Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
+     NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
+     QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
+     K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
+     XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
+}
+```
+
+トークン、キー、その他センシティブな情報を含む場合は、レスポンスをキャッシュに保存することを禁止するために、ヘッダーに以下を指定する必要があります。
+
+| name          | value    |
+| :------------ | :------- |
+| Cache-Control | no-store |
+| Pragma        | no-cache |
+
+(6) クライアントは返却された ID Token を検証します。
