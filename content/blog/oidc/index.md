@@ -63,13 +63,13 @@ state=alsdjfalskdf
 redirect_uri=https://www.example.com/hoge/fuga
 ```
 
-| name          | value            | attr        | description                                                                                                                     |
-| :------------ | :--------------- | :---------- | :------------------------------------------------------------------------------------------------------------------------------ |
-| scope         | "openid"         | REQUIRED    | OIDC の場合は **openid** を必ず含めます。                                                                                       |
-| response_type | "code"           | REQUIRED    | 認証コードフローの場合は **code** で固定です                                                                                    |
-| client_id     | クライアント ID  | REQUIRED    | 認可サーバーが発行したクライアント ID                                                                                           |
-| redirect_uri  | リダイレクト URI | REQUIRED    | レスポンスされるリダイレクト URI です。この URI は、OpenID Provider に対して事前に登録済みの URI と完全一致する必要があります。 |
-| state         | ステート         | RECOMMENDED | 主に CSRF、XSRF 対策のために使用されるクエリ。                                                                                  |
+| name          | attr        | description                                                                                                                     |
+| :------------ | :---------- | :------------------------------------------------------------------------------------------------------------------------------ |
+| scope         | REQUIRED    | OIDC の場合は **openid** を必ず含めます。                                                                                       |
+| response_type | REQUIRED    | 認証コードフローの場合は **code** で固定です                                                                                    |
+| client_id     | REQUIRED    | 認可サーバーが発行したクライアント ID                                                                                           |
+| redirect_uri  | REQUIRED    | レスポンスされるリダイレクト URI です。この URI は、OpenID Provider に対して事前に登録済みの URI と完全一致する必要があります。 |
+| state         | RECOMMENDED | 主に CSRF、XSRF 対策のために使用されるクエリ。                                                                                  |
 
 OIDC では上記以外にもクエリが増えています。詳細は、[OpenID Connect Core 1.0 - 3.1.2.1. Authentication Request](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest)を参照ください。
 
@@ -113,16 +113,7 @@ Pragma: no-cache
   "token_type": "Bearer",
   "expires_in":3600,
   "refresh_token":"kasdfadfas8fa0wieafsdfaj",
-  "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
-     yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
-     NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
-     fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
-     AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
-     Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
-     NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
-     QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
-     K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
-     XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg"
+  "id_token": "eyJhb...vKMzqg"
 }
 ```
 
@@ -134,3 +125,63 @@ Pragma: no-cache
 | Pragma        | no-cache |
 
 (6) クライアントは返却された ID Token を検証します。
+
+### インプリシットフロー
+
+インプリシットフローは、認証リクエストを送り、認証が終わるとレスポンスとして、アクセストークンと ID Token の両方を取得するフローです(アクセストークンは任意です)。
+
+(1) クライアントが認可サーバーの認可エンドポイントに認可リクエストを送ります。このときクライアントが送る認可リクエストは以下の通りです。
+
+```none
+GET {endpoint url} HTTP/1.1
+Host: {host}
+Content-Type: application/x-www-form-urlencoded
+
+response_type=id_token token
+client_id=xxxyyyzzz
+redirect_uri=https://www.example.com/hoge/fuga
+scope=hoge fuga
+state=xyzxyz
+nonce=piyo
+```
+
+| name          | attr        | description                                                                                                                                       |
+| :------------ | :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| response_type | REQUIRED    | インプリシットフローの場合は **id_token token**または**id_token** となります。 **token** は指定すると ID Token を返却できないため、使用しません。 |
+| client_id     | REQUIRED    | 認可サーバーが発行したクライアント ID                                                                                                             |
+| redirect_uri  | REQUIRED    | 認可コードと同じなので割愛                                                                                                                        |
+| scope         | OPTIONAL    | 認可コードと同じなので割愛                                                                                                                        |
+| state         | RECOMMENDED | 認可コードと同じなので割愛                                                                                                                        |
+| nonce         | REQUIRED    | リプレイアタック対策に使用します。この値は認証リクエスト時に生成され、ID Token の nonce claim に含まれます。                                      |
+
+(2) 認証サーバーはユーザーを認証します。詳細は認証コードフローと同じなので割愛します。
+
+(3) 認証サーバーがユーザーの同意と認可を得たら、ID Token とアクセストークン(任意)をクライアントに返却します。このとき認証サーバーが返却するレスポンスは以下の通りです。
+
+```none
+HTTP/1.1 302 Found
+Location: https://www.exmaple.com/hoge/fuga#
+
+access_token=alskdjfal
+token_type=bearer
+id_token=asldkjfalkdjfsa
+expires_in=3600
+state=xyzxyz
+```
+
+| name         | attr        | description                                                                                                                      |
+| :----------- | :---------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| access_token | REQUIRED    | reponse_type が **id_token token** の場合に返却されます。                                                                        |
+| token_type   | REQUIRED    | トークンのタイプを示します。詳細は[7.1. Access Token Types](https://tools.ietf.org/html/rfc6749#section-7.1)を参照してください。 |
+| id_token     | REQUIRED    | ID Token です。イ                                                                                                                |
+| expires_in   | RECOMMENDED | 認可コードフローと同じなので割愛します。                                                                                         |
+| state        | RECOMMENDED | 認可コードフローと同じなので割愛します。                                                                                         |
+
+インプリシットフローの場合は、ID Token に含める claim が認可コードフローと異なります。
+
+|  name   |   attr   | description                                                  |
+| :-----: | :------: | :----------------------------------------------------------- |
+|  nonce  | REQUIRED | インプリシットフローの場合は必須となります。                 |
+| at_hash | REQUIRED | response_type が **id_token token** の場合、必須となります。 |
+
+(4) クライアントは返却された ID Token を検証します。
