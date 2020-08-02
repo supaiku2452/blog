@@ -85,7 +85,7 @@ code=hogehogefugafuga
 state=xyzxyz
 ```
 
-(4) クライアントは認可コードを使用して、トークンエンドポイントにリクエストを送信します。このときクライアントが送るトークンエンドポイントへのリクエストは以下の通りです(リクエストｎ詳細は OAuth2.0 の認可コードフローと同じです)。
+(4) クライアントは認可コードを使用して、トークンエンドポイントにリクエストを送信します。このときクライアントが送るトークンエンドポイントへのリクエストは以下の通りです(リクエストの詳細は OAuth2.0 の認可コードフローと同じです)。
 
 ```none
 GET {endpoint url} HTTP/1.1
@@ -185,3 +185,92 @@ state=xyzxyz
 | at_hash | REQUIRED | response_type が **id_token token** の場合、必須となります。 |
 
 (4) クライアントは返却された ID Token を検証します。
+
+### ハイブリッドフロー
+
+ハイブリッドフローは、トークンを取得するエンドポイントが複数存在するフローです。
+
+(1) クライアントは認証リクエストを送信します(OAuth2.0 の認可リクエストと同じです)。このときクライアントが送る認証リクエストは以下の通りです。
+
+```none
+GET {endpoint url} HTTP/1.1
+Host: {host}
+
+response_type=code
+scope=openid
+client=hogehoge
+state=alsdjfalskdf
+redirect_uri=https://www.example.com/hoge/fuga
+```
+
+| name          | attr        | description                                                                        |
+| :------------ | :---------- | :--------------------------------------------------------------------------------- |
+| response_type | REQUIRED    | response_type によりどのエンドポイントからどのトークンが返ってくるか決定されます。 |
+| scope         | REQUIRED    | 認可コードフローと同じなので割愛します。                                           |
+| client_id     | REQUIRED    | 認可コードフローと同じなので割愛します。                                           |
+| redirect_uri  | REQUIRED    | 認可コードフローと同じなので割愛します。                                           |
+| state         | RECOMMENDED | 認可コードフローと同じなので割愛します。                                           |
+
+ハイブリッドフローにおける response_type は以下の通りです。
+
+- code id_token
+- code token
+- code id_token token
+
+(2) 認証サーバーはユーザーを認証します。詳細は認証コードフローと同じなので割愛します。
+
+(3) 認証サーバーがユーザーの同意と認可を得たら、認可コードと、response_type に応じたトークンをクライアントに返却します。このとき認証サーバーが返却するレスポンスは以下の通りです。
+
+```none
+HTTP/1.1 302 Found
+Location: https://www.exmaple.com/hoge/fuga#
+
+code=aldkjaflsd
+access_token=alskdjfal
+token_type=bearer
+id_token=asldkjfalkdjfsa
+expires_in=3600
+state=xyzxyz
+```
+
+| name         | attr        | description                                                                              |
+| :----------- | :---------- | ---------------------------------------------------------------------------------------- |
+| access_token | REQUIRED    | reponse_type が **code token** または **code id_token token** の場合に返却されます。     |
+| token_type   | REQUIRED    | インプリシットフローと同じなので割愛します。                                             |
+| id_token     | REQUIRED    | response_type が **code id_token** または **code id_token token** の場合に返却されます。 |
+| expires_in   | RECOMMENDED | インプリシットフローと同じなので割愛します。                                             |
+| state        | RECOMMENDED | インプリシットフローと同じなので割愛します。                                             |
+
+(4) クライアントは認可コードを使用して、トークンエンドポイントにリクエストを送信します。このときクライアントが送るトークンエンドポイントへのリクエストは以下の通りです。
+
+```none
+GET {endpoint url} HTTP/1.1
+Host: {host}
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic adfaljdfaljdfalkdjalkjfs
+
+grant_type=authorization_code
+code=hogehogefugafuga
+redirect_uri=https://www.example.com/hoge/fuga
+```
+
+(5) 認可サーバーは、リクエストの検証行う。リクエストの検証の詳細は、[OpenID Connect Core 1.0 - 3.1.3.2. Token Request Validation](https://openid.net/specs/openid-connect-core-1_0.html#TokenRequestValidation)を参照ください。
+
+検証結果に問題がない場合は、アクセストークンと ID Token をレスポンスに設定し、返却します。このとき認可サーバーが返却するレスポンスは以下の通りです。
+
+```none
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+  "access_token": "aklsdjfalksjfasifkjfa",
+  "token_type": "Bearer",
+  "expires_in":3600,
+  "refresh_token":"kasdfadfas8fa0wieafsdfaj",
+  "id_token": "eyJhb...vKMzqg"
+}
+```
+
+(6) クライアントは返却された ID Token を検証します。
