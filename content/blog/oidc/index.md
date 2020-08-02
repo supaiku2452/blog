@@ -1,6 +1,6 @@
 ---
 title: OpenID Connectの概要を理解する
-date: "2020-07-19"
+date: "2020-08-02"
 tags: ["OAuth", "OAuth2.0", "OIDC", "認可"]
 ---
 
@@ -149,9 +149,9 @@ nonce=piyo
 | :------------ | :---------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
 | response_type | REQUIRED    | インプリシットフローの場合は **id_token token**または**id_token** となります。 **token** は指定すると ID Token を返却できないため、使用しません。 |
 | client_id     | REQUIRED    | 認可サーバーが発行したクライアント ID                                                                                                             |
-| redirect_uri  | REQUIRED    | 認可コードと同じなので割愛                                                                                                                        |
-| scope         | OPTIONAL    | 認可コードと同じなので割愛                                                                                                                        |
-| state         | RECOMMENDED | 認可コードと同じなので割愛                                                                                                                        |
+| redirect_uri  | REQUIRED    | 認可コードと同じなので割愛します。                                                                                                                |
+| scope         | OPTIONAL    | 認可コードと同じなので割愛します。                                                                                                                |
+| state         | RECOMMENDED | 認可コードと同じなので割愛します。                                                                                                                |
 | nonce         | REQUIRED    | リプレイアタック対策に使用します。この値は認証リクエスト時に生成され、ID Token の nonce claim に含まれます。                                      |
 
 (2) 認証サーバーはユーザーを認証します。詳細は認証コードフローと同じなので割愛します。
@@ -173,7 +173,7 @@ state=xyzxyz
 | :----------- | :---------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | access_token | REQUIRED    | reponse_type が **id_token token** の場合に返却されます。                                                                        |
 | token_type   | REQUIRED    | トークンのタイプを示します。詳細は[7.1. Access Token Types](https://tools.ietf.org/html/rfc6749#section-7.1)を参照してください。 |
-| id_token     | REQUIRED    | ID Token です。イ                                                                                                                |
+| id_token     | REQUIRED    | ID Token です。                                                                                                                  |
 | expires_in   | RECOMMENDED | 認可コードフローと同じなので割愛します。                                                                                         |
 | state        | RECOMMENDED | 認可コードフローと同じなので割愛します。                                                                                         |
 
@@ -274,3 +274,11 @@ Pragma: no-cache
 ```
 
 (6) クライアントは返却された ID Token を検証します。
+
+## まとめ
+
+今回はOIDCの概要と3つのフローについて説明しました。今回の内容で、各フローがどんな感じでやりとりが行われているかの概要はつかめたと思います。
+
+今回はID TokenのClaimの詳細やID Tokenの検証方法など詳しいところまでは触れていませんので、興味がある方や、プロバイダーとして実装する必要がある方は[こちら](https://openid.net/specs/openid-connect-core-1_0.html)の仕様書を読んでいただければと思います。
+
+本記事に関する指摘、意見等々は[Issues](https://github.com/supaiku2452/blog/issues)に記載いただければと思います。
