@@ -259,12 +259,12 @@ password=password01
 scope=hoge fuga
 ```
 
-| name       | value       | attr     | description                                     |
-| :--------- | :---------- | :------- | :---------------------------------------------- |
-| grant_type | "password"  | REQUIRED | 認可コードフローの場合は **password**で固定です |
-| username   | ユーザー ID | REQUIRED | リソースオーナーのユーザー ID を指定 します     |
-| password   | パスワード  | REQUIRED | リソースオーナーのパスワードを指定します        |
-| scope      | スコープ    | OPTIONAL | その他と同じなので割愛                          |
+| name       | value       | attr     | description                                                                   |
+| :--------- | :---------- | :------- | :---------------------------------------------------------------------------- |
+| grant_type | "password"  | REQUIRED | リソースオーナーパスワードクレデンシャルフローの場合は **password**で固定です |
+| username   | ユーザー ID | REQUIRED | リソースオーナーのユーザー ID を指定 します                                   |
+| password   | パスワード  | REQUIRED | リソースオーナーのパスワードを指定します                                      |
+| scope      | スコープ    | OPTIONAL | その他と同じなので割愛                                                        |
 
 (3) 認可サーバーは、リソースオーナーのクレデンシャルを検証し、問題がなければアクセストークンを返却します。リフレッシュトークンの発行は任意となっています。アクセストークンリクエストのレスポンスは以下の通りです。
 
@@ -295,14 +295,14 @@ Host: {host}
 Authorization: Basic alksdjfalskdjfalsjdl
 Content-Type: application/x-www-form-urlencoded
 
-grant_type=client_credentials <- required
-scope=hoge fuga <- optional
+grant_type=client_credentials
+scope=hoge fuga
 ```
 
-| name       | value                | attr     | description                                               |
-| :--------- | :------------------- | :------- | :-------------------------------------------------------- |
-| grant_type | "authorization_code" | REQUIRED | 認可コードフローの場合は **authorization_code**で固定です |
-| scope      | スコープ             | OPTIONAL | その他と同じなので割愛                                    |
+| name       | value                | attr     | description                                                               |
+| :--------- | :------------------- | :------- | :------------------------------------------------------------------------ |
+| grant_type | "client_credentials" | REQUIRED | クライアントクレデンシャルフローの場合は **client_credentials**で固定です |
+| scope      | スコープ             | OPTIONAL | その他と同じなので割愛                                                    |
 
 (2) 認可サーバーは、クライアントクレデンシャルを元にクライアントを認証し、認証に問題がなければアクセストークンを返却します。このときリフレッシュトークンは含めべきではないとされています。
 
@@ -332,9 +332,9 @@ Host: {host}
 Authorization: Basic asdfjasldfjas
 Content-Type: application/x-www-form-urlencoded
 
-grant_type=refresh_token <- required
-refresh_token=falsdjflajdfal's <- required
-scope=hoge fuga <- optional
+grant_type=refresh_token
+refresh_token=falsdjflajdfal's
+scope=hoge fuga
 ```
 
 | name          | value                | attr     | description                                          |
