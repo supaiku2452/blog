@@ -1,7 +1,7 @@
 import Typography from "typography"
-import Moraga from "typography-theme-moraga"
+import githubTheme from "typography-theme-github"
 
-const typography = new Typography(Moraga)
+const typography = new Typography(githubTheme)
 
 if (process.env.NODE_ENV !== `production`) {
   typography.injectStyles()
