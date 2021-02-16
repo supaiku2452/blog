@@ -30,7 +30,7 @@ const MainLayout = styled.main`
   @media (max-width: 768px) {
     width: 100%;
   }
-  padding: 30px;
+  padding: 0 30px 30px;
 `
 
 export default Layout

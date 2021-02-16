@@ -7,6 +7,7 @@ import { Tags } from "./../../components/Tags";
 import styled from "styled-components";
 import { PublishDate } from "./../../components/PublishDate";
 import { Footer } from "./../../components/Footer";
+import { renderAst } from "./renderAst";
 
 export const Layout = ({ data, pageContext }) => {
   const post = data.markdownRemark;
@@ -27,7 +28,7 @@ export const Layout = ({ data, pageContext }) => {
             {tags.length > 0 && <Tags tags={tags} />}
           </InfoHeader>
         </ArticleHeader>
-        <section dangerouslySetInnerHTML={{ __html: post.html }} />
+        {renderAst(post.htmlAst)}
         <HR />
         <footer />
       </Article>

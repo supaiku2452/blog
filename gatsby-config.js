@@ -43,7 +43,16 @@ module.exports = {
             },
           },
           `gatsby-remark-autolink-headers`,
-          `gatsby-remark-prismjs`,
+          {
+            resolve: `gatsby-remark-prismjs`,
+            options: {
+              classPrefix: "language-",
+              inlineCodeMarker: null,
+              aliases: {},
+              noInlineHighlight: true,
+              showLineNumbers: true
+            }
+          },
           `gatsby-remark-copy-linked-files`,
           `gatsby-remark-smartypants`,
         ],
