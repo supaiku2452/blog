@@ -4,7 +4,7 @@ date: "2021-02-23"
 tags: ["Java", "AssertJ", "テスト", "備忘録"]
 ---
 
-AssertJは業務でよく使うのですが、忘れることが多いのでそのメモです。
+AssertJは業務でよく使うのですが、忘れることが多いのでそのメモです。サンプルコードは[ここ](https://github.com/supaiku2452/assertj-suburi)にあげています。
 
 ## AssertJとは
 
