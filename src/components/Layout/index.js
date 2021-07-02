@@ -13,24 +13,32 @@ const Layout = ({ blogPosts }) => {
       <Header />
       <MainLayout>
         <SEO title="All posts" />
-        <>
+        <Contents>
+          <ArticleLayout>
           {blogPosts.map(({ node }) => (
             <ArticleItem key={node.fields.slug} node={node} />
           ))}
-        </>
+          </ArticleLayout>
+           <Bio />
+        </Contents>
       </MainLayout>
-      <Bio />
       <Footer />
     </div>
   )
 }
 
+const Contents = styled.div`
+  display: flex;
+`
+
+const ArticleLayout = styled.div`
+  display: block;
+`
+
 const MainLayout = styled.main`
-  width: calc(100% - 300px);
-  @media (max-width: 768px) {
-    width: 100%;
-  }
+  max-width: 1068px;
   padding: 0 30px 30px;
+  margin: auto;
 `
 
 export default Layout
