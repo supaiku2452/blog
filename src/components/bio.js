@@ -106,17 +106,14 @@ const IconWithText = ({ text, iconName, onClick }) => (
 
 const Layout = styled.div`
   width: 300px;
-  right: 0;
-  top: 60px;
-  position: absolute;
   @media (max-width: 768px) {
-    width: auto;
-    position: initial;
+    display: none;
   }
   margin: 16px 16px 0;
   border: 1px solid black;
   padding: 12px;
   background-color: #ffffff;
+  height: fit-content;
 `
 
 const LayoutButton = styled.div`

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "@reach/router";
 import { Icon } from "./../Icon";
+import { Link } from "gatsby"
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ export const Header = () => {
 
   return (
     <Layout>
-      janjan's blog
+      <Link to='/'> janjan's blog</Link>
       <IconsLayout>
         <Icon iconName="home" onClick={() => onClick("/")} />
         {/* <Icon iconName="rss" /> */}
@@ -42,7 +43,6 @@ const Layout = styled.header`
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
   padding-left: 24px;
   text-decoration-line: underline;
-  cursor: pointer;
   justify-content: space-between;
 `;
 
@@ -50,4 +50,5 @@ const IconsLayout = styled.div`
   display: flex;
   justify-content: space-evenly;
   width: 180px;
+  cursor: pointer;
 `;
