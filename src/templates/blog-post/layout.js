@@ -57,7 +57,9 @@ export const Layout = ({ data, pageContext }) => {
 };
 
 const Article = styled.article`
+  max-width: 768px;
   padding: 0 30px;
+  margin: auto;
 `;
 const ArticleHeader = styled.header`
   margin-bottom: 16px;
@@ -75,6 +77,8 @@ const InfoHeader = styled.div`
 `;
 const Nav = styled.nav`
   padding: 0 30px;
+  max-width: 768px;
+  margin: auto;
 `;
 const HR = styled.hr`
   margin-bottom: ${rhythm(1)};
