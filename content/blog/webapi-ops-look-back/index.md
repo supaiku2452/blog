@@ -12,8 +12,7 @@ tags: ["WebAPI","OpenAPI", "AWS ApiGateway", "OpenAPI Generator"]
   - [OpenAPI 3.0.0](https://swagger.io/specification/)
   - REST Apiに関するhow toは[Zalando RESTful API と イベントスキーマのガイドライン](https://restful-api-guidelines-ja.netlify.app/)を利用
 - インフラ
-  - Amazon API Gateway -> NLB -> ECS
-developerguide/getting-started-with-private-integration.html)感じ
+  - Amazon API Gateway -> NLB -> ECS という感じ
   - あとはAPI Gateway向けにOpenAPI拡張として [x-amazon-apigateway-integration](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration.html) を使ったりしています
 - 運用周り
   - [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator)を使用し、フロントエンドとバックエンドのコードを自動生成
