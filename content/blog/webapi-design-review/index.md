@@ -123,7 +123,8 @@ APIを作る時は、URIやボディのペイロードのプロパティにバ�
 - 診断を行う場合は、`POST https://api.janx2.info/personality-diagnoses`
   - 仮に上限を超えていた場合は`400`を返却する
 - 今月の診断状況を取得するAPIから残回数や消費数、最大回数などの情報を取れるようにする
-  - `GET https://api.janx2.info/personality-diagnoses/statuses`
+  - `GET https://api.janx2.info/personality-diagnoses/status`
+  - statusesとしないのは、性格診断APIのstatusは単一リソースであることを示すため
 
 ### レスポンスのフィールドを選択できる
 
